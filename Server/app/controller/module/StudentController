@@ -21,7 +21,7 @@ const StudentController={
     },
     destroy(req,res){
         res.send({
-            message:"dlete",
+            message:"dlete message",
         });
     },
 
