@@ -1,4 +1,4 @@
-const StudentController={ 
+const TeacherController={ 
     create(req,res){
         res.send({
             message:"success!new recod created",
@@ -26,4 +26,4 @@ const StudentController={
     },
 
 }
-module.exports=StudentController
+module.exports=TeacherController

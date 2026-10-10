@@ -1,7 +1,14 @@
 const express = require("express")
-const StudentController = require("./app/controller/module/StudentController")
-const PORT = 5789
+const mongoose = require("mongoose")
+const StudentController = require("./app/controller/StudentController")
+// const StudentController = require("./app/controller/module/StudentController")
+const PORT = 8000
+
+mongoose.connect("mongodb://localhost:27017/StudentDb")
 const app = express()
+
+app.use(express.json());
+
 app.get('/',(req,res) =>{
     res.send("welcome to the coding world")
 })
