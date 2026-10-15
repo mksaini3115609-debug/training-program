@@ -1,29 +1,63 @@
+const TeacherModel = require("../models/TeacherModel");
 const TeacherController={ 
-    create(req,res){
-        res.send({
-            message:"success!new recod created",
-        });
+    async create(req,res){
+        const body = req.body;
+        try{
+            await TeacherModel.create(body);
+            res.status(201).send({
+                message:"Success nwe record created.",
+                reqBody: body,
+            });
+        } catch (error) {
+            console.error("Error occured while new teacher recod created.",
+                error
+            );
+            res.status(500).send({
+                error: error.message,
+            });
+            
+        }
+        
     },
-    readAll(req,res){
-        res.send({
-            message:"success!new recod created",
-        });
-    },
-    readOne(req,res){
-        res.send({
-            message:"success!new recod read",
-        });
-    },
-    update(req,res){
-        res.send({
-            message:"success!new recod update",
-        });
-    },
-    destroy(req,res){
-        res.send({
-            message:"dlete message",
-        });
+    async readAll(req, res) {
+    const teachers = await TeacherModel.find();
+
+    res.send({
+        message: "Success! Teacher records found.",
+        data: teachers,
+    });
     },
 
-}
-module.exports=TeacherController
+    async readOne(req, res) {
+    const params = req.params;
+
+    const teacherDetails = await TeacherModel.findById(params.id);
+
+    res.send({
+        message: "Success! Teacher details found.",
+        data: teacherDetails,
+    });
+    },
+
+    async update(req, res) {
+    const params = req.params;
+    const body = req.body;
+
+    await TeacherModel.findByIdAndUpdate(params.id, body);
+
+    res.send({
+        message: "Success! Teacher record has been updated.",
+    });
+    },
+
+    async destroy(req, res) {
+    const params = req.params;
+
+    await TeacherModel.findByIdAndUpdate(params.id);
+
+    res.send({
+    message: "Success! Teacher record has been updated.",
+    });
+    },
+};
+module.exports = TeacherController;

@@ -7,10 +7,14 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
+    "aish": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "express": "^5.2.1",
+    "json": "^11.0.0",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.11.1"
   }
 }
