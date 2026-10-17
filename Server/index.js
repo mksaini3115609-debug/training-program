@@ -1,5 +1,6 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const cors = require("cors")
 const StudentController = require("./app/controller/StudentController")
 const TeacherController = require("./app/controller/TeacherController")
 // const AuthController = require("./app/controller/AuthController")
@@ -18,13 +19,14 @@ catch(err){
 const app = express()
 
 app.use(express.json());
+ app.use(cors());
 
 
-app.post("/student",[authMiddleware],StudentController.create);
-app.get("/student",[authMiddleware],StudentController.readAll);
-app.get("/student/:id",[authMiddleware],StudentController.readOne);
-app.put("/student/:id",[authMiddleware],StudentController.update);
-app.delete("/student/:id",[authMiddleware],StudentController.destroy);
+app.post("/student",StudentController.create);
+app.get("/student",StudentController.readAll);
+app.get("/student/:id",StudentController.readOne);
+app.put("/student/:id",StudentController.update);
+app.delete("/student/:id",StudentController.destroy);
 
 app.post("/register",AuthController.register);
 // app.post("/login",[authMiddleware], AuthController.login);
