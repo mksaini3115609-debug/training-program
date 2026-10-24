@@ -1,33 +1,54 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useEffect, useState } from "react";
 
-const AddStudent = ({ totalStudents, fetchStudent }) => {
+const AddStudent = ({ totalStudents, fetchStudents, editData }) => {
     const [form, setForm] = useState({
-        name: "",
+        name:"",
         fatherName: "",
         email: "",
         phone: "",
         dob: "",
     });
+    useEffect(() => {
+        if (!editData)
+            setForm({
+                name: "",
+                fatherName: "",
+                email: "",
+                phone: "",
+                dob: "",
+            });
+        else setForm(editData);
+    }, [editData]);
 
     const saveForm = async (e) => {
         e.preventDefault();
 
         // alert(JSON.stringify(form, " ", 2));
-
-        const response = await fetch("  http://localhost:8000/student", {
-            method: "POST",
-            body: JSON.stringify(form),
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-        });
-        const addRes = await response.json();
+        if (!editData) {
+            const response = await fetch("http://localhost:8000/student", {
+                method: "POST",
+                body: JSON.stringify(form),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+            });
+            await response.json();
+        } else {
+            const response = await fetch(`http://localhost:8000/student/${editData._id}`, {
+                method: "Put",
+                body: JSON.stringify(form),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+            });
+            await response.json();
+        }
 
         fetchStudents();
-
     };
+
     return (
         <div>
             <div>Total Students are = {totalStudents}</div>
@@ -108,13 +129,10 @@ const AddStudent = ({ totalStudents, fetchStudent }) => {
                         required
                     />
                 </div>
-                <button>Save Details</button>
+                <button>{editData ? "Update" : "Save"} Details</button>
             </form>
         </div>
     );
 };
 
-
-
-
-export default AddStudent
+export default AddStudent;

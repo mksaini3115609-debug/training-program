@@ -19,7 +19,7 @@ catch(err){
 const app = express()
 
 app.use(express.json());
- app.use(cors());
+app.use(cors());
 
 
 app.post("/student",StudentController.create);
@@ -29,7 +29,7 @@ app.put("/student/:id",StudentController.update);
 app.delete("/student/:id",StudentController.destroy);
 
 app.post("/register",AuthController.register);
-// app.post("/login",[authMiddleware], AuthController.login);
+app.post("/login", AuthController.login);
 
 app.post("/teacher",TeacherController.create);
 app.get("/teacher",TeacherController.readAll);

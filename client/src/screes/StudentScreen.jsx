@@ -1,14 +1,20 @@
-import React,{useEffect, useState} from 'react'
-import AddStudent from './AddStudent';
+import React, { useEffect, useState } from "react";
+import AddStudent from "./AddStudent";
 
-const StudentScree = () => {
+const StudentScreen = () => {
   const [loading, setLoading] = useState(false);
   const [students, setStudents] = React.useState([]);
+  const [editData, setEditData] = useState(null);
+
   const fetchStudents = async () => {
     setLoading(true);
-    const response = await fetch("   http://localhost:8000/student ");
+
+    const response = await fetch("http://localhost:8000/student");
+
     const studentData = await response.json();
+
     console.log("data:", studentData);
+
     setStudents(studentData.data);
 
     setLoading(false);
@@ -17,12 +23,29 @@ const StudentScree = () => {
     fetchStudents();
   }, []);
 
+  const handleDelete = async (id) => {
+    if (!confirm("Are you Soure to delete this record?")) return;
+
+
+    const res = await fetch(`http://localhost:8000/student/${id}`, {
+      method:"DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+
+      },
+    });
+    await res.json();
+    fetchStudents();
+  };
   return (
     <div>
-      <AddStudent totalStudentsens={students.length}
+      <AddStudent
+        totalStudents={students.length}
         fetchStudents={fetchStudents}
+        editData={editData}
       />
-      {!loading ? (
+      {loading ? (
         <div>Loading students....</div>
       ) : (
         <table border="1">
@@ -48,17 +71,20 @@ const StudentScree = () => {
                 <td>{sRow.dob}</td>
                 <td>
                   <button type="button">View Details</button>
-                  <button type="button">Edit</button>
-                  <button type="button">Delete</button>
+                  <button type="button" onClick={() => setEditData(sRow)}>
+                    Edit
+                  </button>
+                  <button type="button" onClick={() => handleDelete(sRow._id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
-
             ))}
           </tbody>
         </table>
       )}
-   </div>
+    </div>
   );
 };
 
-export default StudentScree
+export default StudentScreen;
